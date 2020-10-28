@@ -47,20 +47,35 @@ const agendaItemIcons = {
 export const app = new Vue({
   el: '#app',
 
-  data: {
-    //
+  data() {
+    return {
+      meetup: {},
+      agendaItemTitles,
+      agendaItemIcons,
+      dateOptions: { year: 'numeric', month: 'short', day: 'numeric' }
+    }
   },
 
   mounted() {
     // Требуется получить данные митапа с API
+    this.getMeetup();
   },
 
   computed: {
-    //
+    image() {
+      return this.meetup.imageId ? getMeetupCoverLink(this.meetup) : `/assets/icons/icon-cal-sm.svg`
+    }
   },
 
   methods: {
     // Получение данных с API предпочтительнее оформить отдельным методом,
     // а не писать прямо в mounted()
+    async getMeetup() {
+      this.meetup = await fetch(API_URL+'/meetups/'+MEETUP_ID).then(res=>res.json());
+      // this.image = await fetch(API_URL+'/images/'+this.meetup.imageId).then(res=>res.json());
+    },
+    dateTimeFormat(ms) {
+      return (Number.isInteger(ms)) ? new Date(ms).toISOString().substr(0, 10) : '';
+    }
   },
 });
