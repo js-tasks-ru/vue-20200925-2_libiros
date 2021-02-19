@@ -8,9 +8,9 @@ export const MeetupView = {
   name: 'MeetupView',
 
   template: `
-    <div v-if="meetup">
+    <div>
       <!-- meetup cover -->
-      <meetup-cover v-if="link" :link="link" :title="meetup.title"></meetup-cover>
+      <meetup-cover :link="link" :title="meetup.title"></meetup-cover>
       <div class="container">
         <div class="meetup">
           <div class="meetup__content">
@@ -45,7 +45,7 @@ export const MeetupView = {
 
   computed: {
     link: function () {
-      return this.meetup.imageId ? getMeetupCoverLink(this.meetup) : false
+      return this.meetup.imageId ? getMeetupCoverLink(this.meetup) : ''
     },
     date: function() {
       return new Date(this.meetup.date)

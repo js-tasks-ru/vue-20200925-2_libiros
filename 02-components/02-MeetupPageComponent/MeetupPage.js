@@ -4,7 +4,7 @@ import { MEETUP_ID, fetchMeetup } from './data.js';
 export const MeetupPage = {
   name: 'MeetupPage',
 
-  template: `<meetup-view :meetup="meetup"></meetup-view>`,
+  template: `<meetup-view v-if="meetup" :meetup="meetup"></meetup-view>`,
 
   components: {
     MeetupView
@@ -12,7 +12,7 @@ export const MeetupPage = {
 
   data() {
     return {
-      meetup: {}
+      meetup: null
     }
   },
 
