@@ -48,14 +48,14 @@ export default {
     },
 
     toastRun(obj) {
-      obj.arr.push({
-        id: obj.arr.length,
+      this.toastsArray.push({
+        id: this.length,
         message: obj.message,
         icon: obj.icon,
         class: obj.class,
       });
       setTimeout(() => {
-        obj.arr.splice(obj.arr[0], 1);
+        this.toastsArray.splice(this.toastsArray[0], 1);
       }, DELAY);
     },
   },
