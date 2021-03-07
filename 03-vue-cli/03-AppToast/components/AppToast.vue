@@ -1,12 +1,13 @@
 <template>
   <div class="toasts">
-    <div class="toast toast_success">
-      <app-icon icon="check-circle" />
-      <span>Success</span>
-    </div>
-    <div class="toast toast_error">
-      <app-icon icon="alert-circle" />
-      <span>Error</span>
+    <div
+      class="toast"
+      :class="toast.class"
+      v-for="toast in toastsArray"
+      :key="toast.id"
+    >
+      <app-icon :icon="toast.icon" />
+      <span>{{ toast.message }}</span>
     </div>
   </div>
 </template>
@@ -16,15 +17,47 @@ import AppIcon from './AppIcon';
 
 const DELAY = 5000;
 
+function toastRun(dataObject) {
+  dataObject.arr.push({
+    id: dataObject.arr.length,
+    message: dataObject.message,
+    icon: dataObject.icon,
+    class: dataObject.class,
+  });
+  setTimeout(() => {
+    dataObject.arr.splice(dataObject.arr[0], 1);
+  }, DELAY);
+}
+
 export default {
   name: 'AppToast',
 
   components: { AppIcon },
 
-  methods: {
-    error(message) {},
+  data: function () {
+    return {
+      toastsArray: [],
+    };
+  },
 
-    success(message) {},
+  methods: {
+    error(message) {
+      toastRun({
+        message: message,
+        icon: 'alert-circle',
+        class: 'toast_error',
+        arr: this.toastsArray,
+      });
+    },
+
+    success(message) {
+      toastRun({
+        message: message,
+        icon: 'check-circle',
+        class: 'toast_success',
+        arr: this.toastsArray,
+      });
+    },
   },
 };
 </script>
