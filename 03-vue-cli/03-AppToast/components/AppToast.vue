@@ -17,18 +17,6 @@ import AppIcon from './AppIcon';
 
 const DELAY = 5000;
 
-function toastRun(dataObject) {
-  dataObject.arr.push({
-    id: dataObject.arr.length,
-    message: dataObject.message,
-    icon: dataObject.icon,
-    class: dataObject.class,
-  });
-  setTimeout(() => {
-    dataObject.arr.splice(dataObject.arr[0], 1);
-  }, DELAY);
-}
-
 export default {
   name: 'AppToast',
 
@@ -42,7 +30,7 @@ export default {
 
   methods: {
     error(message) {
-      toastRun({
+      this.toastRun({
         message: message,
         icon: 'alert-circle',
         class: 'toast_error',
@@ -51,12 +39,24 @@ export default {
     },
 
     success(message) {
-      toastRun({
+      this.toastRun({
         message: message,
         icon: 'check-circle',
         class: 'toast_success',
         arr: this.toastsArray,
       });
+    },
+
+    toastRun(obj) {
+      obj.arr.push({
+        id: obj.arr.length,
+        message: obj.message,
+        icon: obj.icon,
+        class: obj.class,
+      });
+      setTimeout(() => {
+        obj.arr.splice(obj.arr[0], 1);
+      }, DELAY);
     },
   },
 };
