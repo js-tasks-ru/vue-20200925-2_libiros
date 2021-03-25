@@ -1,25 +1,36 @@
 <template>
   <div class="content-tabs">
     <div class="content-tabs__nav">
-      <a href="#" class="content-tabs__tab">Page A</a>
-      <a href="#" class="content-tabs__tab">Page B</a>
+      <router-link
+        v-for="tab in tabs"
+        :key="tab.text"
+        class="content-tabs__tab"
+        active-class="content-tabs__tab_active"
+        :to="tab.to"
+        >{{ tab.text }}</router-link
+      >
     </div>
-    <div class="content-tabs__content">Content</div>
+    <div class="content-tabs__content">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'ContentTabs',
+  props: {
+    tabs: {
+      type: Array,
+      required: true,
+    },
+  },
 };
 </script>
 
 <style scoped>
 .content-tabs {
   margin: 0;
-}
-
-.content-tabs__content {
 }
 
 .content-tabs__nav {
