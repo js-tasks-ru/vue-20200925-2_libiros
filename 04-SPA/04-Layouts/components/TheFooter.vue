@@ -1,4 +1,8 @@
-<template></template>
+<template>
+  <div>
+    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita, quo!
+  </div>
+</template>
 
 <script>
 export default {
@@ -6,4 +10,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.footer {
+    padding: 100px 0 60px;
+    text-align: center;
+}
+</style>
