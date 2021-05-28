@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <footer class="footer">
     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita, quo!
-  </div>
+  </footer>
 </template>
 
 <script>

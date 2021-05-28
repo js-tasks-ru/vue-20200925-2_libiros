@@ -1,5 +1,5 @@
 <template>
-  <div class="page page_meetup-forms page_onboarding">
+  <div class="page page_meetup-forms">
     <h2>{{ title }}</h2>
     <slot/>
   </div>
