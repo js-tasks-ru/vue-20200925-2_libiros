@@ -1,10 +1,16 @@
 <template>
-  <button></button>
+  <base-button v-bind="$attrs" v-on="$listeners" class="button_danger">
+    <slot></slot>
+  </base-button>
 </template>
 
 <script>
+import BaseButton from './BaseButton.vue';
 export default {
   name: 'DangerButton',
+  components: {
+    BaseButton,
+  },
 };
 </script>
 
