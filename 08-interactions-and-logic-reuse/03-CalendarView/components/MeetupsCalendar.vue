@@ -1,32 +1,45 @@
 <template>
-  <calendar-view>
-    <!-- Каждый митап - ссылка на страницу митапа -->
-    <!-- Используя слот требуется вывести список митапов дня в каждой ячейке -->
-    <!--
-    <router-link
-      :to="{ name: 'meetup', params: { meetupId: meetup.id } }"
-      class="rangepicker__event"
-      >{{ meetup.title }}</router-link
-    >
-    -->
+  <calendar-view v-slot="{ date }">
+    <template v-if="shedule[date]">
+      <router-link
+        v-for="meetup in shedule[date]"
+        :key="meetup.id"
+        :to="{ name: 'meetup', params: { meetupId: meetup.id } }"
+        class="rangepicker__event"
+        >{{ meetup.title }}</router-link
+      >
+    </template>
   </calendar-view>
 </template>
 
 <script>
+function makeDateString(date) {
+  return new Date(date).toDateString();
+}
 import CalendarView from './CalendarView';
-
 export default {
   name: 'MeetupsCalendar',
-
   props: {
     meetups: {
       type: Array,
       required: true,
     },
   },
-
   components: {
     CalendarView,
+  },
+  computed: {
+    shedule() {
+      let shedule = {};
+      this.meetups.forEach((meetup) => {
+        let _date = makeDateString(meetup.date);
+        if (!shedule[_date]) {
+          shedule[_date] = [];
+        }
+        shedule[_date].push({ ...meetup });
+      });
+      return shedule;
+    },
   },
 };
 </script>
