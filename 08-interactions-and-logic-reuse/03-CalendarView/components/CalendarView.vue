@@ -3,31 +3,102 @@
     <div class="rangepicker__calendar">
       <div class="rangepicker__month-indicator">
         <div class="rangepicker__selector-controls">
-          <button class="rangepicker__selector-control-left"></button>
-          <div>Январь 2021</div>
-          <button class="rangepicker__selector-control-right"></button>
+          <button
+            class="rangepicker__selector-control-left"
+            @click="prevMonth"
+          ></button>
+          <div>{{ fullDate }}</div>
+          <button
+            class="rangepicker__selector-control-right"
+            @click="nextMonth"
+          ></button>
         </div>
       </div>
       <div class="rangepicker__date-grid">
-        <div class="rangepicker__cell rangepicker__cell_inactive">28</div>
-        <div class="rangepicker__cell rangepicker__cell_inactive">29</div>
-        <div class="rangepicker__cell rangepicker__cell_inactive">30</div>
-        <div class="rangepicker__cell rangepicker__cell_inactive">31</div>
-        <div class="rangepicker__cell">
-          1
-          <a class="rangepicker__event">Митап</a>
-          <a class="rangepicker__event">Митап</a>
+        <div
+          class="rangepicker__cell"
+          :class="{ rangepicker__cell_inactive: !day.isActive }"
+          v-for="day in allDays"
+          :key="day.date"
+        >
+          {{ day.num }}
+          <slot :date="day.date"> </slot>
         </div>
-        <div class="rangepicker__cell">2</div>
-        <div class="rangepicker__cell">3</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+function getFirstInGrid(date) {
+  const firstDay = date.getDay() ? date.getDay() - 1 : 6;
+  return new Date(date.setDate(date.getDate() - firstDay));
+}
+
+function getAllDays(date) {
+  let month = date.getMonth();
+  let day = date.getDay() ? date.getDay() - 1 : 6;
+  let days = new Date(
+    new Date(new Date(date).setMonth(month + 1)).setDate(0),
+  ).getDate();
+  let cells = (days + day) % 7 ? 7 - ((days + day) % 7) : 0;
+  let total = days + day + cells;
+  return total;
+}
+function makeDateString(date) {
+  return new Date(date).toDateString();
+}
+function setNextDay(date) {
+  return new Date(date.setDate(date.getDate() + 1));
+}
+
 export default {
   name: 'CalendarView',
+  data: () => ({
+    date: new Date(new Date().setDate(1)),
+  }),
+  computed: {
+    fullDate() {
+      return this.date
+        ? this.date.toLocaleString(navigator.language, {
+            year: 'numeric',
+            month: 'long',
+          })
+        : '';
+    },
+    allDays() {
+      let result = [];
+      let _current = new Date(this.date);
+      let _month = _current.getMonth();
+      _current = getFirstInGrid(_current);
+      let cells = getAllDays(_current);
+      for (let cell = 1; cell <= cells; cell++) {
+        let day = {
+          num: _current.getDate(),
+          isActive: true,
+          date: makeDateString(_current),
+        };
+        if (_current.getMonth() != _month) day.isActive = false;
+        result.push(day);
+        _current = setNextDay(_current);
+      }
+      return result;
+    },
+  },
+  // Методы понадобятся для переключения между месяцами
+  methods: {
+    prevMonth() {
+      const date = new Date(this.date);
+      const currentMonth = date.getMonth();
+      this.date = new Date(date.setMonth(currentMonth - 1));
+    },
+
+    nextMonth() {
+      const date = new Date(this.date);
+      const currentMonth = date.getMonth();
+      this.date = new Date(date.setMonth(currentMonth + 1));
+    },
+  },
 };
 </script>
 
